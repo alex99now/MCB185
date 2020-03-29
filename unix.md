@@ -1,22 +1,13 @@
+Just enough Unix for Python
+===========================
 
-===================================
+## Introduction ##
 
 This is meant to be a very quick introduction to the Unix operating
-system for the BIS180L bioinformatics laboratory class at UC Davis. The
-examples below assume you are using Ubuntu Linux 13.10, other versions
-and distributions will probably be fine. Why does the title of this
-document mention Unix when the distribution is Linux? Is there a
-difference between Unix and Linux? Practically, no; philosophically,
-sort-of; politically, yes. No time to discuss. Onward.
-
-## Author, Version, and Other Front-matter ##
-
-This document was authored by Ian Korf. It is in the  Public Domain. No
-rights reserved. It is for entertainment purposes only, so if you hurt
-yourself, don't blame me. The text was prepared in Markdown format (John
-Gruber) using BareBones TextWrangler. The PDF version was formatted with
-Marked (by Brett Terpstra) using the GitHub stylesheet. Thanks clever
-and kind developers for making my life easier.
+system for the MCB185 bioinformatics programming class at UC Davis. Most
+people reading this will be using Ubuntu or some other flavor of Linux.
+Is there a difference between Unix and Linux? Practically, no;
+philosophically, sort-of; politically, yes. No time to discuss. Onward.
 
 ## Terminal, Command Line, and Shell ##
 
@@ -42,15 +33,16 @@ and ending with the **return** key.
 
 Congratulations, you just made your first Unix statement. You type words
 on the command line (in this case just one) and then hit return to
-execute the command. `date` is but one of hundreds of Unix commands you
+execute the command. `date` is but one of thousands of Unix commands you
 have at your fingertips (literally). Like most Unix commands, `date`
 does more than simply output the current date in the format you just
 witnessed. You can choose any number of formats and even set the
 internal clock to a specific time. Let's explore this a tiny bit.
 Commands can take **arguments**. Let's tell the `date` program that we
-want the date to be formatted a year-month-day and with
+want the date to be formatted as year-month-day and with
 hours-minutes-seconds also. The syntax below will seem arcane, but the
-various abbreviations should be obvious.
+various abbreviations should be obvious. Type the command and observe
+the output.
 
 	date "+%Y-%m-%d %H:%M:%S"
 
@@ -74,9 +66,9 @@ automatically when you execute the `man` command.
 ### Injury Prevention ###
 
 Typing is bad for your health. Seriously, if you type all day, you will
-end up with an repetitive stress injury. Don't type for hours at a time.
+end up with a repetitive stress injury. Don't type for hours at a time.
 Make sure you schedule breaks. Unix has several ways to save your
-fingers. Let's go back run the `date` program again. Instead of typing
+fingers. Let's go back and run the `date` program again. Instead of typing
 it in, use the **up arrow** on your keyboard to go backwards through
 your command history. If you scroll back too far, you can use the **down
 arrow** to move forward through your history (but not into the future,
@@ -84,30 +76,25 @@ Unix isn't that smart).
 
 	date "+%Y-%m-%d %H:%M:%S"
 
-You can use the **left arrow** and **right arrow** to edit the text on
-the command line.
+You can use the **left arrow** and **right arrow** to position the
+cursor so you can edit the text on the command line.
 
 To see your entire history of commands in this session, use the
 `history` command.
 
 	history
 
-If you want to repeat a particular command line, you can select a
-specific line of your history. For example, to re-run command line #7,
-you type the following:
-
-	!7
-
 Probably the most important finger saver in Unix is **tab completion**.
-When you hit the tab key, it completes the rest of the word for you. For
-example, instead of typing out `history` you can instead type `his`
-followed by the tab key, the rest of the word will be completed. If you
-use something less specific, can hit the tab key a second time and Unix
-will show you the various legal words. Try typing `h` and then the tab
-key twice. Those are all the commands that begin with the letter h. We
-will use tab completion constantly. Not only does it save you key
-presses and time, it also ensures that your spelling is correct. Try
-misspelling the `history` command to observe the error it reports.
+When you hit the tab key, the shell completes the rest of the word for
+you if it can guess what you want next. For example, instead of typing
+out `history` you can instead type `his` followed by the tab key, the
+rest of the word will be completed. If you use something less specific,
+you can hit the tab key a second time and Unix will show you the various
+legal words. Try typing `h` and then the tab key twice. Those are all
+the commands that begin with the letter h. We will use tab completion
+constantly. Not only does it save you key presses and time, it also
+ensures that your spelling is correct. Try misspelling the `history`
+command to observe the error it reports.
 
 	historie
 
@@ -123,8 +110,9 @@ your user name. You can examine the contents of a variable with the
 We won't use variables much, but it's important to know they exist
 because some programs use them for configuration. If you want to see all
 your environment variables, you can use the `printenv` command without
-any arguments. Don't worry if this is very confusing because we don't
-care about it at this point.
+any arguments. Don't worry if you find the topic of environment
+variables is very confusing at this time. We will revisit the topic
+later when it matters more.
 
 	printenv
 
@@ -133,9 +121,11 @@ care about it at this point.
 Unix is mostly a text environment. You will be reading and writing a lot
 of text files. To do this you will use a text editor. There are many,
 many text editors, and some people are insanely passionate about one or
-the other. We don't have time for that. We'll use two: **nano**, which
-works from your command line interface, and also **gedit** that works
-like a word processor.
+the other. We don't have time for that. When you want to edit a file in
+the terminal, we will use **nano**. More often, we will be programming
+using a text editor. There are many good ones available for free. On
+Windows, try Notepad++ or Atom. On Mac try BBEdit or Atom. On Linux try
+gedit or Atom.
 
 In Unix, pretty much everything is a file. You need to be able to
 create, edit, and delete files and directories to do anything. You can
@@ -159,7 +149,7 @@ space each of your files and directories uses.
 
 (For the this exercise and others that follow, it may be useful to have
 your graphical desktop displaying the contents of your home directory.
-That way you can see that typing and clicking ar related.)
+That way you can see that typing and clicking are related.)
 
 There are a number of ways to create a file. The `touch` command will
 create a file or change its modification time (Unix records when the
@@ -174,14 +164,14 @@ Now lets create a file with some content in it.
 
 After you hit return, you will notice that you do not return to a
 command line prompt. Keep typing. Write a bunch of nonsense lines. Keep
-going. Write poetry if you must. Everything you're entering at the
+going. Write poetry if you like. Everything you're entering at the
 keyboard is now going into the file called `bar`. To end the file, you
-need to send the end-of-file character, which is control-D. This
-character is at the end of every text file. Hit the control key and then
-the letter d. Another way of saying this is hit the ^D character. Note
-that you don't type the ^ or the capital D. It's just the way we
-communicate in writing that one should type the control key and then the
-d key.
+need to send the end-of-file character, which is control-D. This is an
+invisible character that is at the end of every text file. Hit the
+control key and then the letter d. Another way of saying this is hit the
+^D character. Note that you don't type the ^ or the capital D. It's just
+the way we communicate in writing that one should type the control key
+and then the d key when the combination is invisible.
 
 To see the contents of the file, you can also use the `cat` command.
 This dumps the entirety of the file into your terminal.
@@ -197,7 +187,7 @@ Similarly, you can inspect the last 10 lines with `tail`.
 
 	tail bar
 
-Both of these commands have command line options so that you can see a
+Both of these programs have command line options so that you can see a
 different number of lines. For example, to see just the first line you
 would do the following:
 
@@ -208,30 +198,25 @@ A more useful way to look at files is with a **pager**. The `more` and
 what you used before when viewing the manual page for the `date`
 command. Use the spacebar to advance the page and q to quit. `more` and
 `less` do more or less the same thing, but oddly enough `less` does more
-than `more`.
+than `more`. There are a lot of subtle jokes in the Unix culture.
 
 	less bar
 
 ### Editing Files ###
 
-You can edit files with nano or gedit. Let's stay in the terminal and
-use nano for now.
+Let's try editing a file with `nano`, which is a terminal-based editor.
 
 	nano bar
 
-This brings up a terminal-based editor. Now you can change the random
-text you just wrote. Use the arrow keys to move the cursor around. Add
-some text by typing. Remove some text with the delete key. At the
-bottom, you can see a menu that uses control keys. To save the file you
-hit the ^O key (control and then the letter o). You will then be
-prompted for the file name, at which point you can overwrite the current
-file (bar) or make a new file with a different name. To exit nano, use
-^X. Note, you don't need to give nano an argument when you start it up.
-
-Open up a new terminal. Create a new file called `unix_notes.txt`
-(either by touching it first or saving an empty nano file). Use this to
-record the various things you've learned today. You might want to go
-back to this later. 
+This changes the entire look of your terminal. Now you can change the
+random text you just wrote. Use the arrow keys to move the cursor
+around. Add some text by typing. Remove some text with the delete key.
+At the bottom, you can see a menu that uses control keys. To save the
+file you hit the ^O key (control and then the letter o). You will then
+be prompted for the file name, at which point you can overwrite the
+current file (bar) or make a new file with a different name. To exit
+nano, hit ^X. Note, you don't need to give nano a file name when you
+start it up.
 
 Unix file names often have the following properties:
 
@@ -248,13 +233,16 @@ determine what directory you are currently in, use the `pwd` command
 
 	pwd
 
- This will tell you your location is `/home/bios180student` (or maybe
- not if you're reading this outside the context of the class or if the
- documentation is out of date - it doesn't matter, this is your home
- directory). The current directory is also known by the single letter `.`
- (that is not the end of the sentence, it's the period character). If
- you want to know what files are in your current working directory, use
- the following command:
+This will tell you what your location is, which starts in your home
+directory. In MacOS, it will be `/Users/your_name` and in Ubuntu it will
+be `/home/your_name`. In addition to this **absolute path**, your
+location also has a **relative path**, which is simply the dot `.`
+character. You have your own given name, and you also have a pronoun you
+call yourself: **I** or **me**. Sometimes it's more convenient to use a
+pronoun than a whole name.
+
+If you want to know what files are in your current working directory,
+use the following command:
 
 	ls .
 
@@ -273,12 +261,11 @@ command.
 This command adds a character to the end of the file names to indicate
 what kind of files they are. A forward slash character indicates that
 the file is a directory. These directories inside your working directory
-are sub-directories. They are **below** your current location. There are
-also directories **above** you. There is at most one directory
+are called _sub-directories_. They are **below** your current location.
+There are also directories **above** you. There is at most one directory
 immediately above you. We call this your parent directory, which in Unix
-is called `..` (again, not the end of this sentence, but rather two
-period characters together). You can list your parent directory as
-follows:
+is called `..` (that wasn't a typo, it's two dots). You can list your
+parent directory as follows:
 
 	ls ..
 
@@ -286,7 +273,7 @@ The `ls` command has a lot of options. Try reading the `man` pages and
 trying some of them out. Now is a good time to experiment with a few
 command line options. Note that you can specify them in any order and
 collapse them if they don't take arguments (some options have
-arguments). Don't forget to log your learning in your other terminal.
+arguments).
 
 	man ls
 	ls -a
@@ -297,13 +284,13 @@ arguments). Don't forget to log your learning in your other terminal.
 	ls -al
 
 There are two ways to specify a directory: **relative** path and
-**absolute** path. Everything so far has been the relative path. The
-command `ls ..` listed the directory above the current directory. The
-command `nano bar` edited the file `bar` in the current directory. What
-if you want to list some directory somewhere else or edit a file
-somewhere else? To specify the absolute path, you precede the path with
-a forward slash. For example, to list the absolute root of the Unix file
-system, you would type the following:
+**absolute** path. The command `ls ..` listed the directory above the
+current directory. The command `nano bar` edited the file `bar` in the
+current directory. You could also have written `nano ./bar`. What if you
+want to list some directory somewhere else or edit a file somewhere
+else? To specify the absolute path, you precede the path with a forward
+slash. For example, to list the absolute root of the Unix file system,
+you would type the following:
 
 	ls /
 
@@ -316,7 +303,8 @@ is. But this is not true of the relative path.
 
 	ls ..
 
-To change your working directory, you use the `cd` command. Try changing to the root directory
+To change your working directory, you use the `cd` command. Try changing
+to the root directory
 
 	cd /
 	pwd
@@ -358,7 +346,8 @@ using the `mkdir` command.
 	mkdir Stuff
 
 Notice that the directory starts with a capital letter. This isn't
-required, but it's a good practice. Now let's move some files into that new directory with the `mv` command.
+required, but it's a good practice. Now let's move some files into that
+new directory with the `mv` command.
 
 	mv foo Stuff
 
@@ -410,9 +399,9 @@ file that starts with `ba` will now be moved to Stuff.
 That was just two files, but I think you can imagine the power of moving
 100 files with a single command.
 
-An alias is another name for a file. These are often useful to organize
-your files and directories. Let's try it using the `ln -s` command (we
-always use the `-s` option with `ln`).
+An alias is another name for a file. Like a nickname for a person. These
+are often useful to organize your files and directories. Let's try it
+using the `ln -s` command (we always use the `-s` option with `ln`).
 
 	ln -s Stuff/foo ./foof
 	nano foof
@@ -434,8 +423,7 @@ You didn't type those file names completely, right? You used tab
 completion, right?
 
 You can delete multiple files at once too and even whole directories.
-But you're better off using the graphical interface to delete files.
-Deleting files is not something we wish you to automate.
+Watch out though, that can get dangerous.m
 
 ### Working with Text Files ###
 
@@ -461,172 +449,33 @@ computers. **One of the stupidest things you can do is to put sequence
 data into Microsoft Word or Excel (or similar software) and then attempt
 to use it in Unix.**
 
+>Never create files in Mac or Windows, only Unix/Linux.
+
 Bioinformatics often deals with large text files. These can contain
 whole genomes, massive RNA-seq experiments, or thousands of spectra. You
 need to appreciate the size of these files so that you don't do stupid
-stuff with them, like email them to a colleague. Let's look at the
-Arabidopsis thaliana genome. First, let's see how big it is. We'll use
-the `ls` with the `-h` and `-l` options so that we can see the size of
-the file. Please use tab completion when typing the following.
+stuff with them. Nothing says _amateur_ quite like emailing someone
+uncompressed 10M attachments.
 
-	ls -lh /data/C.elegans
+## Customizing Your Shell ##
 
-You should see something that looks similar to this:
 
-	-rw------- 1 ian  staff    29M Nov 26 14:41 c_elegans.PRJNA13758.WS240.genomic.fa.gz
-	-rw------- 1 ian  staff   5.9M Oct  9 21:06 c_elegans.PRJNA13758.WS240.protein.fa.gz
 
-There are two files, one contains genomic sequence, the other contains
-protein. The genome is 29 megabytes. That's not a very big file, but
-it's too big to email. A knee-jerk reaction might be to open this in
-your text editor. That's a bad idea for several reasons: (1) You
-shouldn't edit data files. (2) It takes way a lot more memory to edit a
-file than view its contents. (3) The file is binary. Let's do it anyway.
-Use tab completion to do the following.
-
-	nano /data/C.elegans/c_elegans.PRJNA13758.WS240.genomic.fa.gz
-
-The file is binary, so it looks like gibberish. We need to uncompress it
-to see its contents. The file name is also hopelessly long. Let's
-organize ourselves a little. First, let's create a directory where we
-can collect our work.
-
-	mkdir ~/Project0
-	cd ~/Project0
-
-The path to the genome file is long. We can simplify it with an alias.
-
-	ln -s /data/C.elegans/c_elegans.PRJNA13758.WS240.genomic.fa.gz ./genome.gz
-	ls -lF
-
-Note what `ls -lF` shows you. The `@` symbol trailing the file name
-shows you that the file is an alias. The arrow shows you what the alias
-points to.
-
-Now let's start uncompressing it. The `gunzip` command uncompresses
-files. If we want to stream the file to the terminal in a way similar to
-`cat` we use `gunzip -c`.
-
-	gunzip -c genome.gz
-
-When you get sick of watching the text scroll by, you can interrupt it
-with a ^C (control-c). ^C is a good way to interrupt a runaway process.
-But sometimes it doesn't work and you may have better luck with ^Z,
-which sleeps the process (yes, just like the Borg). More on that later.
-
-Sometimes we want to look at the first few lines of a file without
-committing ourselves to the whole file. `head` is great for that.
-
-	head genome.gz
-
-Rats, it's still binary. What would be great is if we could uncompress
-the file and view the contents with `head`. One of the awesome powers of
-Unix is that you can pipeline the output of one program to the input of
-another with the pipe `|` token. This might look like a capital I or
-lowercase l, but it's not, it's its own strange beast located somewhere
-where you right pinkie can access it.
-
-	gunzip -c genome.gz | head
-
-Success. The first line of the file is a FASTA header and this is
-followed by a bunch of sequence lines. If you don't know what the FASTA
-format is, now is a good time to read about the FASTA format online.
-
-FASTA files sometimes contain multiple sequences. As this file
-represents the C. elegans genome, we expect 6 chromosomes. Let's look
-for those in the file.
-
-	gunzip -c genome.gz | less
-
-Now we can page through the file looking for lines that start with `>`.
-As you page through the file, note how long the chromosome is. It will
-take you over 12,000 more spacebar presses to get to the next chromosome
-(assuming your terminal is still 24 lines). Remember, this is a small
-genome. One of the features of `less` is that it allows you to search
-for simple patterns. Hit the forward-slash key `/` to bring up the
-search prompt at the bottom of the terminal. Now hit the `>` key and
-press return. `less` will find the next `>` symbol in the file. Keep
-hitting the `/` key and return. `less` remembers the last pattern.
-
-If you need to find patterns in files, the Unix `grep` command is often
-the first tool people turn to.
-
-	gunzip -c genome.gz | grep ">"
-
-Now let's save that output to a file. You can redirect the output of a
-program to a file with the `>` token.
-
-	gunzip -c genome.gz | grep ">" > chromosomes.txt
-	cat chromosomes.txt
-
-You will be creating a lot of files in this course. Sometimes they will
-be large. Use `gzip` and `gunzip` as needed. `gzip` usually makes a file
-between 50% and 25% its size, so it's a great way to save space,
-especially when you start to work with large -omic data files.
-
-	gzip chromosomes.txt
-	ls -l
-	gunzip chromosomes.txt
-	ls -l
-
-Note that `gzip` automatically adds and removes the `.gz` file extension
-appropriately.
-
-In Unix, when people send you multiple files, they generally send them
-as a **tar ball**. The `tar` command creates archives, which are single
-files that contain multiple files. Let's create a bunch of files in this
-directory.
-
-	touch file1 file2 file3 file4 file5
-
-Now let's `cd` up a directory and have a look around.
-
-	cd ..
-	ls
-	ls Project0
-
-To create an archive of Project0, we need to tell the `tar` command that
-we want to create the archive with the `-c` option and tell it the name
-of the file with the `-f` option.
-
-	tar -c -f project0.tar Project0
-
-Unix options generally go before the arguments on the command line.
-That's why `-f project0.tar` goes before `Project0`. You can collapse
-single letter options if you're lazy. So the following command is the
-same thing.
- 
- 	tar -cf project0.tar Project0
- 	ls
-
-To save space on your file system, you should compress your tar-balls.
-
-	gzip project0.tar
-	ls
-
-The `tar` command will do this automatically with the `-z` option. So
-when you want to create a tar-ball, the one-liner is as follows:
-
-	tar -czf project0.tar.gz Project0
-
-To decompress a tar-ball, you swap the `-c` option for the `-x` option.
-Before we do that, let's create a new directory and inflate the tar-ball
-in there so that we make a copy and don't overwrite our original
-directory.
-
-	mkdir Stuff
-	mv project0.tar.gz Stuff
-	cd Stuff
-	tar -xzf project0.tar.gz
-	ls
-	ls Project0
-
-### Using File Permissions ###
+### File Permissions ###
 
 A file can have 3 kinds of permissions: read, write, and execute. These
 are abbreviated as `rwx` when you do a `ls -l`. Read and write are
 obvious, but execute is a little weird. Programs and directories need
-executable permission to access them. Important data files, like the
+executable permission to access them.
+
+Generally, you want read and write access to your files.
+
+
+
+ Important data files, 
+
+
+like the
 genome of C. elegans, should not be edited. To ensure that, they should
 have read only permission. Every file has permissions for the user,
 group, and public. So a file can be readable by you and inaccessible to
@@ -804,16 +653,13 @@ things in this class, but we include this info for completeness.
 | ~       | your home directory (also $HOME)
 | ^c      | send interrupt signal to current process
 | ^d      | send end-of-file character
-| ^z      | send sleep signal current process: see bg and fg
 | tab     | tab-complete names
 | *       | wildcard - matches everything
-| &       | send command to background
 | \|      | pipe output from one command to another
 | >       | redirect output to file
 
 | Command   | Example       | Intent                        |
 |:----------|:--------------|:------------------------------|
-| `bg`      | `bg`          | send a sleeping process to background
 | `cat`     | `cat > f`     | create file f and wait for keyboard (see ^d)
 |           | `cat f`       | stream contents of file f to STDOUT
 |           | `cat a b > c` | concatenate files a and b into c
@@ -823,11 +669,9 @@ things in this class, but we include this info for completeness.
 | `chmod`   | `chmod 644 f` | change file permissions 
 |           | `chmod u+x f` | change file permissions
 | `cp`      | `cp f1 f2`    | make a copy of file f1 called f2
-| `cut`     | `cut -f 5 ff` | print column 5 from file ff
 | `date`    | `date`        | print the current date
 | `df`      | `df -h .`     | display free space on file system
 | `du`      | `du -h ~`     | display the sizes of your files
-| `fg`      | `fg`          | send sleeping process to foreground
 | `grep`    | `grep p f`    | print lines with the letter p in file f
 | `gzip`    | `gzip f`      | compress file f
 | `gunzip`  | `gunzip f.gz` | uncompress file f.gz
@@ -859,7 +703,6 @@ things in this class, but we include this info for completeness.
 | `sort`    | `sort f`      | sort file f alphabetically by first column
 |           | `sort -n f`   | sort file f numerically by first column
 |           | `sort -k 2 f` | sort file f alphabetically by column 2
-| `ssh`     | `ssh hal`     | remotely log into machine hal
 | `tail`    | `tail f`      | display the last 10 lines of file f
 |           | `tail -f f`   | as above and keep displaying if file is open
 | `tar`     | `tar -cf ...` | create a compressed tar-ball (-z to compress)
