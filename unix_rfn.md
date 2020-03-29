@@ -1,5 +1,5 @@
-Just enough Unix for Python
-===========================
+Unix RFN for MCB185
+===================
 
 ## Introduction ##
 
@@ -449,204 +449,268 @@ computers. **One of the stupidest things you can do is to put sequence
 data into Microsoft Word or Excel (or similar software) and then attempt
 to use it in Unix.**
 
->Never create files in Mac or Windows, only Unix/Linux.
-
-Bioinformatics often deals with large text files. These can contain
-whole genomes, massive RNA-seq experiments, or thousands of spectra. You
-need to appreciate the size of these files so that you don't do stupid
-stuff with them. Nothing says _amateur_ quite like emailing someone
-uncompressed 10M attachments.
-
-## Customizing Your Shell ##
+>Never create new files in Mac or Windows, only Unix/Linux.
 
 
+## Hello World ##
+
+It's time to write your first python program. We're going to do this
+with nano. Start nano by typing the command name followed by the file
+you want to create.
+
+	nano hello_world.py
+
+Now type the following lines:
+
+	#!/usr/bin/env python3
+	
+	print('hello world')
+
+Hit ^O (that's the command key plus the o key) to save the file and the
+^W to exit nano. Now let's talk about the 3 lines you wrote.
+
+Line 1 is what's known as an **interpreter directive**. It's also
+sometimes called a **hashbang**. It tells the shell which interpreter to
+use when the program executed (more on this in just a bit).
+
+Line 2 is a blank line. Use blank lines to separate _thoughts_ from each
+other. The hashbang is one such thought and the other is a print
+statement.
+
+Line 3 prints 'hello world to the terminal. Now let's try running the
+command from the shell.
+
+	python3 hello_world.py
+
+If everything worked okay, you should have seen 'hello world' in your
+terminal. If not, don't go on. Ask for help fixing your computing
+environment.
 
 ### File Permissions ###
 
+You might be wondering what line 1 did in your hello_world.py program.
+You're about to find out.
+
 A file can have 3 kinds of permissions: read, write, and execute. These
-are abbreviated as `rwx` when you do a `ls -l`. Read and write are
-obvious, but execute is a little weird. Programs and directories need
-executable permission to access them.
+are abbreviated as `rwx`. Read and write are obvious, but execute is a
+little weird. Programs and directories need executable permission to
+access them.
 
-Generally, you want read and write access to your files.
+Generally, you want read and write access to the files you create. But
+if you have some incredibly important data file, you might want to
+protect it from being edited, so you may want to remove write permission
+to make it read-only.
 
+In addition to having 3 types of permissions, every file also has 3
+types of people that can access it: the owner (you), the group you
+belong to (e.g. a laboratory), or the public. For the purposes of
+learning how to program, we can treat these all the same. However, you
+can imagine that some files should not be readable by others (for
+example, your private poetry efforts).
 
+So let's examine the file permissions on the hello_world.py program.
 
- Important data files, 
+	ls -lF hello_world.py
 
+This will produce something like the following.
 
-like the
-genome of C. elegans, should not be edited. To ensure that, they should
-have read only permission. Every file has permissions for the user,
-group, and public. So a file can be readable by you and inaccessible to
-the public. Let's look at one of the files we just created.
+	-rw-r--r--  1 iankorf  staff     45 Mar 29 13:56 hello_world.py
 
-	ls -lF chromosomes.txt
+After the leading dash, there are 3 triplets of letters. The first
+triplet shows user permissions. I have read and write permission but not
+execute. The next triplets are for group and public. Both have read
+permission, but not write or execute. Let's first turn on all
+permissions for everyone using the `chmod` command and then list again.
 
-This will produce something like the following, which shows the
-permissions, owner (ian), group (staff), size (29 bytes), date, and file
-name. 
+	chmod 777 hello_world.py
+	ls -lF hello_world.py
 
-	-rw-r--r--  1 ian  staff    29B Mar 26 11:11 chromosomes.txt
+Notice that you can now see `rwx` for owner, group, and public.
 
-Let's first turn on all permissions for everyone.
+	-rwxrwxrwx  1 iankorf  staff     45 Mar 29 13:56 hello_world.py*
 
-	chmod 777 chromosomes.txt
+There is also an asterisk after the program name. The `-F` option in
+`ls` shows you what kind of file something is with a trailing character.
+If the file is a directory, there will be a trailing `/`.
 
-The explanation of what this does will have to wait for a bit. The file now has the following properties.
+You won't need to get complicated with permissions. The following 3 are
+all you need right now.
 
-	-rwxrwxrwx  1 ian  staff    29B Mar 26 11:11 chromosomes.txt*
+* `chmod 444` file is read only
+* `chmod 666` file may be read and edited
+* `chmod 777` file may be read, edited, and used as Unix command
 
-The first character is a hyphen. This means the file is an ordinary
-file. If the file was a directory, the letter would be a d. If it was an
-alias, the letter would be an l. The 3 rwx symbols that follow are the
-read, write, and execute permissions for user, group, and public. So
-everyone has permission to read, write, and execute this file. If you
-copy files from a USB flash drive, it will typically have all these
-permissions because the file system on most flash drives is not
-Unix-based. Having all permissions on is generally not a good idea. Most
-files fit into one of a few categories.
+The `chmod` command has two different syntaxes. The more human readable
+one looks like this.
 
-| Category   | Code         | Oct | Meaning 
-|:-----------|:-------------|:----|-----------------------------------------
-| raw data   | `-r--r--r--` | 444 | anyone can read, nobody can write
-| private    | `-rw-------` | 600 | I can read/write, others nothing
-| shared     | `-rw-r--r--` | 644 | I can read/write, group/public can read
-| shared     | `-rw-rw-r--` | 664 | We can read/write, public can read
+	chmod u-x hello_world.py
+	ls -lF hello_world.py
 
-You can change the permissions of a file with the `chmod` command. There
-are two different syntaxes. The more human readable one looks like this.
+This command says: "change the user (u) to remove (-) the execute (x)
+permission from file hello_world.py". You add permissions with +.
 
-	chmod u-x chromosomes.txt
+	chmod u+x hello_world.py
+	ls -lF hello_world.py
 
-This command says "change the user (u) to remove (-) the execute (x)
-permission from file chromosmes.txt". You add permissions with +.
+The less readable `chmod` format is assigning all parameters in octal
+format. 4 is the read permission. 2 is the write permission. 1 is the
+execute permission. Each rwx corresponds to one octal number from 0 to
+7. So `chmod 777` turns on all permissions for all types of people and
+`chmod 000` turns them all off.
 
-	chmod u+x chromosomes.txt
+Now that your hello_world.py program has execute permissions, you can
+use it like a Unix program. That is, you don't have to type `python3`
+before the program name.
 
-The octal format is convenient because it changes all of the permissions
-at once, but can be confusing for people who don't think in octal. 4 is
-the read permission. 2 is the write permission. 1 is the execute
-permission. Each rwx corresponds to one octal number from 0 to 7. So
-`chmod 777` turns on all permissions for all types of people and
-`chmod 000` turns them all off. I generally use only two permissions:
-444 and 644. That is, everything is readable, but somethings only I can
-write.
+	./hello_world.py
 
-## Processes ##
+But what's with the `./` before the program name. You don't have to type
+that when you run the `ls` command or the `chmod` command, for example.
+That's because those programs are in your **executable path** and
+`hello_world.py` is not. We'll fix that in a bit.
 
-One of the most important programs in Unix is `top` because it lets us
-monitor the health of our computer. Open up a new terminal and start the
-program.
+## Customizing Your Environment ##
 
-	top
+There are 3 things you should do to customize your programming environment.
 
-On Unix systems, `top` is the equivalent of the the Task Manger in
-Windows and the Activity Monitor in Mac OS. Once you start running
-bioinformatics software on your computer, you can monitor what is
-happening using `top`. 
+1. Set up your code directory
+2. Create your GitHub repository
+3. Customize your profile
 
-### Viewing Processes ###
+## Code Directory ##
 
-Let's go back to an previous command and watch it with `top`. Notice
-that it doesn't use 100% of the CPU.
+Create a directory where you're going to organize all of your
+programming projects. Let's call this "Code". Directories in your home
+directory often start with a capital letter, and we'll follow this
+practice to reduce unintentional surprise. All of the programs and other
+stuff we do will end up in this directory.
 
-	gunzip -c genome.gz
+	cd
+	mkdir Code
 
-Let's do that one more time, and this time we will use the `time`
-command to determine the elapsed and CPU time.
+## GitHub Repository ##
 
-	time gunzip -c genome.gz
+If you're going to be a bioinformatics programmer (or just look like
+one), you need a GitHub account as part of your CV. If you want people
+to believe you're a programmer, you need a place where you're putting
+your code and logging your activity. Use your web browser to go to
+github (https://github.com) and create your account.
 
-On my computer, I get the following stats
+Choose a username that isn't stupid. Remember, this will be part of your
+CV. After setting your email and password, choose the free plan and then
+answer a few questions about your interests to create your account.
 
-	real    0m6.930s
-	user    0m0.483s
-	sys     0m0.859s
+Now check your email to verify your email address. It's time to create
+your first repository! Name this `learning_python`. Select the radio
+button to make this Private, and also check the box to initialize with a
+README. Lastly, you should add a license in the dropdown menu to get in
+the habit of doing all programming things properly. I generally use the
+MIT License.
 
-It took about 7 seconds to stream the contents to my terminal. The CPU
-time is the sum of the user and sys time. Why did it take so much more
-real time than CPU time? Because it takes some time to display to the
-terminal, during which the CPU isn't very busy. Let's try the same task
-and send the output to a file.
+The next step is to add your repository to the Code directory you just
+created. Click on the green **Clone or download** button and copy the
+URL there. It should look something like
+"https://github.com/USERNAME/learning_python.git", where USERNAME is
+whatever you chose as your GitHub name.
 
-	time gunzip -c genome.gz > foo
+	cd ~/Code
+	git clone https://github.com/USERNAME/learning_python.git
 
-Big difference!
+This will create a new directory called `learning_python` in your `Code`
+directory. If you look inside, you will see that it contains two files:
+`LICENSE` and `README.md`. The LICENSE basically says that other people
+can use your code but that they have to acknowledge that you wrote it
+and if anything bad happens, it wasn't your fault. The README is the
+start of some documentation. Click on the README.md file and it will
+show you that it contains almost nothing. Click on the pen icon on the
+right, and you can edit the file. Write a sentence below the first line
+about what this is for and then hit the green "Commit changes" button at
+the bottom of the page.
 
-	real    0m0.413s
-	user    0m0.357s
-	sys     0m0.056s
+Now you should see your new text. Note that the title is in a much
+larger font than your sentence. The `.md` suffix on the file indicates
+that it is written in Markdown format. This is a very simple way to
+create formatting from simple text. Get in the habit of using Markdown
+whenever you write plain text.
 
-Sometimes we don't even need to see the output. In this case, we can
-redirect the output to `/dev/null` which is Unix's black hole (not even
-electrons escape).
+Now let's add another repository to your `Code` directory. This is the
+repository for the course. It contains a variety of files, including the
+document you're reading in its original Markdown format.
 
-	time gunzip -c genome.gz > /dev/null
+	cd ~/Code
+	git clone https://github.com/iankorf/MCB185.git
 
-Faster still because we don't have to write to the file system.
+## Customize Profile ##
 
-	real    0m0.356s
-	user    0m0.348s
-	sys     0m0.009s
+In order to simplify a few things, we need to customize your shell.
+First, we have to figure out which shell you're running. Your shell is
+in your SHELL environment variable. Here are two ways of seeing that.
 
-Note that the CPU time is slightly greater than the real time. How can
-something take less wall clock time than CPU time? Are we violating the
-laws of physics? No, your computer has more than one core and can split
-up tasks on various cores. For programs that can utilize multiple cores,
-the real time may be much less than the CPU time.
+	printenv SHELL
+	echo $SHELL
 
-### Managing Processes ###
+If your shell is `/bin/bash` then check if you have a file called
+`.profile` or `.bash_profile` or `.bashrc`. If you already have one of
+those files, edit it with nano. If not, create a `.profile` with nano.
 
-Sometimes you will start a program and decide you want to stop it
-permanently or temporarily. Run the following command and then watch
-what happens in `top`. You may find it useful to copy-paste this command
-from the document to your terminal to make sure you don't introduce
-spelling errors.
+If your shell is `/bin/zsh` then check if you have a file called
+`.zshrc`. If it exists, edit it with nano. If not, create it with nano.
 
-	perl -e 'while(1){print $i++, chr(10)}'
+Now enter the following 2 lines into the file you're editing.
 
-This command is an endless loop in the Perl programming language that
-counts from 0 to some very large number. You cannot do anything useful
-in your terminal until the program stops, which unfortunately, is a long
-time from now. Fortunately, we can break out of the program with ^C. Do
-that now.
+	alias ls="ls -F"
+	export PATH=$PATH:.
 
-But what if you just wanted to pause the program and restart it again?
-You can do that with ^Z. So let's go back and execute that command again
-(use the up arrow) and this time send it a sleep signal.
+The first line makes it so that whenever you use the `ls` command,
+you're actually invoking `ls -F` which displays the file type by
+appending a `*` to executable files and a `/` to directories.
 
-	perl -e 'while(1){print $i++, chr(10)}'
+The second line adds your current directory `.` to the executable path.
+Now when your terminal is in the same directory as your program, it will
+run. Open up a new terminal and it will automatically load the new
+customizations.
 
-Now hit ^Z. To get it to pick up where it left off, use the `fg` command
-to put the process into the **foreground**.
+	cd Code
+	hello_world.py
 
-	fg
+## Git Commands ##
 
-Now go look at `top`. You should see a perl process using a lot of CPU.
-Every process (program) on your computer has a process ID (PID). If you
-know the PID of a process, you can take control of it (assuming it is
-yours). My perl process has PID 6000. On yours it is probably different.
-You can view all your processes with the `ps` command. In the following
-command, replace `ian` with your user name: `bios180student`.
+Lets move `hello_world.py` into your `learning_python` repository and
+run it from there.
 
-	ps -u ian
+	mv hello_world.py learning_python
+	cd learning_python
+	hello_world.py
 
-However you attain the PID of your offending process, you can `kill` it.
-Replace `6000` with your PID.
+Now let's add it to your repository so that it becomes part of your
+GitHub repo. Type the following command and observe the output.
 
-	kill 6000
+	git status
 
-You can put processes into the **background**. This will mean the
-terminal no longer controls them. You can't ^C to interrupt such a
-process, but you can use the `kill` command. Add `&` to the end of a
-command line to put it into the background or use the `bg` command to
-put a paused process into the background. You shouldn't need to do these
-things in this class, but we include this info for completeness.
+This shows that `hello_world.py` is not in your repository. In order to upload it back to GitHub, we issue the following 3 commands.
 
-## Unix Reference ##
+	git add hello_world.py
+	git commit -m "initial upload"
+	git push
 
-| Token  | Function
+The `add` argument tells `git` we want to start tracking changes to this
+file. The `commit` tells `git` we are done. The `push` tells git to
+upload it.
+
+The general workflow with `git` is the following.
+
+1. Create a file
+2. `git add`
+3. `git commit`
+4. `git push`
+5. Do other stuff, come back later
+6. `git pull`
+7. Edit the file
+8. Go back to step 2
+
+## Quick Unix Reference ##
+
+| Token   | Function
 |:--------|:-------------------------------------|
 | .       | your current directory (see pwd)
 | ..      | your parent directory
@@ -672,6 +736,11 @@ things in this class, but we include this info for completeness.
 | `date`    | `date`        | print the current date
 | `df`      | `df -h .`     | display free space on file system
 | `du`      | `du -h ~`     | display the sizes of your files
+| `git`     | `git add f`   | start tracking file f
+|           | `git commit -m "message"` | finished edits, ready to upload
+|           | `git push`    | put changes into repository
+|           | `git pull`    | retrieve latest documents from repository
+|           | `git status`  | check on status of repository
 | `grep`    | `grep p f`    | print lines with the letter p in file f
 | `gzip`    | `gzip f`      | compress file f
 | `gunzip`  | `gunzip f.gz` | uncompress file f.gz
