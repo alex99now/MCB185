@@ -1,13 +1,13 @@
-Unix RFN for MCB185
-===================
+Unix RFN
+========
 
 ## Introduction ##
 
-This is meant to be a very quick introduction to the Unix operating
-system for the MCB185 bioinformatics programming class at UC Davis. Most
-people reading this will be using Ubuntu or some other flavor of Linux.
-Is there a difference between Unix and Linux? Practically, no;
-philosophically, sort-of; politically, yes. No time to discuss. Onward.
+This is a very quick introduction to the Unix operating system for the
+MCB185 bioinformatics programming class at UC Davis. Most people reading
+this will be using Ubuntu or some other flavor of Linux. Is there a
+difference between Unix and Linux? Practically, no; philosophically,
+sort-of; politically, yes. No time to discuss. Onward.
 
 ## Terminal, Command Line, and Shell ##
 
