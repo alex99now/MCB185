@@ -653,8 +653,9 @@ in your SHELL environment variable. Here are two ways of seeing that.
 	echo $SHELL
 
 If your shell is `/bin/bash` then check if you have a file called
-`.profile` or `.bash_profile` or `.bashrc`. If you already have one of
-those files, edit it with nano. If not, create a `.profile` with nano.
+`.profile` or `.bash_profile` or `.bashrc` in your home directory. If
+you already have one of those files, edit it with nano. If not, create a
+`.profile` with nano.
 
 If your shell is `/bin/zsh` then check if you have a file called
 `.zshrc`. If it exists, edit it with nano. If not, create it with nano.
