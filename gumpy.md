@@ -605,7 +605,7 @@ answer a few questions about your interests to create your account.
 
 Now check your email to verify your email address. It's time to create
 your first repository! Name this `learning_python`. Select the radio
-button to make this Private, and also check the box to initialize with a
+button to make this Public, and also check the box to initialize with a
 README. Lastly, you should add a license in the dropdown menu to get in
 the habit of doing all programming things properly. I generally use the
 MIT License.
@@ -699,7 +699,7 @@ This shows that `hello_world.py` is not in your repository. In order to upload i
 
 The `add` argument tells `git` we want to start tracking changes to this
 file. The `commit` tells `git` we are done. The `push` tells git to
-upload it.
+upload it back to GitHub.
 
 The general workflow with `git` is the following.
 
@@ -707,7 +707,7 @@ The general workflow with `git` is the following.
 2. `git add`
 3. `git commit`
 4. `git push`
-5. Do other stuff, come back later
+5. Time passes...
 6. `git pull`
 7. Edit the file
 8. Go back to step 2
@@ -719,8 +719,8 @@ The general workflow with `git` is the following.
 | .       | your current directory (see pwd)
 | ..      | your parent directory
 | ~       | your home directory (also $HOME)
-| ^c      | send interrupt signal to current process
-| ^d      | send end-of-file character
+| ^C      | send interrupt signal to current process
+| ^D      | send end-of-file character
 | tab     | tab-complete names
 | *       | wildcard - matches everything
 | \|      | pipe output from one command to another
@@ -728,7 +728,7 @@ The general workflow with `git` is the following.
 
 | Command   | Example       | Intent                        |
 |:----------|:--------------|:------------------------------|
-| `cat`     | `cat > f`     | create file f and wait for keyboard (see ^d)
+| `cat`     | `cat > f`     | create file f and wait for keyboard (see ^D)
 |           | `cat f`       | stream contents of file f to STDOUT
 |           | `cat a b > c` | concatenate files a and b into c
 | `cd`      | `cd d`        | change to relative directory d
